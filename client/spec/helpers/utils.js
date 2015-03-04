@@ -33,8 +33,8 @@ function wait() {
 // open url and authenticate
 function openUrl(url) {
     return function() {
-        return browser.get('/')
-            .then(wait)
+        return browser.driver.get(browser.baseUrl)
+            .then(waitForSuperdesk)
             .then(login)
             .then(wait)
             .then(function() {
@@ -49,5 +49,13 @@ function printLogs(prefix) {
         if (browserLog.length) {
             console.log(prefix + 'log: ' + require('util').inspect(browserLog));
         }
+    });
+}
+
+function waitForSuperdesk() {
+    return browser.driver.wait(function() {
+        return browser.driver.executeScript('return window.superdeskIsReady || false');
+    }).then(function() {
+        return browser.waitForAngular();
     });
 }

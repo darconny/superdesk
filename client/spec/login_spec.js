@@ -1,5 +1,6 @@
 
 var Login = require('./helpers/pages').login;
+var waitForSuperdesk = require('./helpers/utils').waitForSuperdesk;
 
 describe('Login', function() {
     'use strict';
@@ -26,12 +27,21 @@ describe('Login', function() {
     it('user can log out', function() {
         modal.login('admin', 'admin');
         element(by.css('button.current-user')).click();
+
+        // wait for sidebar animation to finish
+        browser.wait(function() {
+            return element(by.buttonText('SIGN OUT')).isDisplayed();
+        });
+
         element(by.buttonText('SIGN OUT')).click();
-        browser.get('/');
-        modal = new Login();
-        expect(modal.btn.isDisplayed()).toBe(true);
-        expect(modal.username.isDisplayed()).toBe(true);
-        expect(modal.username.getAttribute('value')).toBe('');
+
+        // reload
+        browser.driver.get(browser.baseUrl).then(waitForSuperdesk).then(function() {
+            var modal = new Login();
+            expect(modal.btn.isDisplayed()).toBe(true);
+            expect(modal.username.isDisplayed()).toBe(true);
+            expect(modal.username.getAttribute('value')).toBe('');
+        });
     });
 
     it('unknown user can\'t log in', function() {

@@ -4,6 +4,7 @@
 
 var getToken = require('./helpers/auth').getToken;
 var resetApp = require('./helpers/fixtures').resetApp;
+var waitForSuperdesk = require('./helpers/utils').waitForSuperdesk;
 
 // runs before every spec
 beforeEach(function(done) {
@@ -11,15 +12,13 @@ beforeEach(function(done) {
     getToken(function() {
         resetApp(function() {
             browser.driver.get(browser.baseUrl)
-            .then(function() {
-                return browser.driver.executeScript('sessionStorage.clear();localStorage.clear();');
-            }).then(function() {
-                return browser.driver.wait(function() {
-                    return browser.driver.executeScript('return window.superdeskIsReady || false');
-                });
-            }).then(function () {
-                return browser.waitForAngular();
-            }).then(done);
+                .then(clearStorage)
+                .then(waitForSuperdesk)
+                .then(done);
         });
     });
 });
+
+function clearStorage() {
+    return browser.driver.executeScript('sessionStorage.clear();localStorage.clear();');
+}
