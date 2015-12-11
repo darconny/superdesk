@@ -8,6 +8,9 @@
         <figure class="avatar">
             <img sd-user-avatar data-user="user" alt="{{ user.FullName }}">
             <a href="" class="change-photo" ng-click="editPicture()" translate>Change Photo</a>
+            <a class="remove-avatar" ng-click="removeAvatar()" tooltip-placement="bottom" style="margin-bottom:50px" tooltip="{{ 'Remove' | translate }}">
+            <i class="icon-trash icon-white"></i>
+            </a>
         </figure>
         <span class="disabled-label" ng-if="user._id && !user.is_enabled" translate>disabled</span>
         <span class="disabled-label" ng-if="user._id && user.is_enabled && !user.is_active" translate>inactive</span>

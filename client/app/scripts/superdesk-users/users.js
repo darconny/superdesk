@@ -955,6 +955,12 @@
                         });
                     };
 
+                    scope.removeAvatar = function() {
+                        console.log('userrr', scope.user);
+                        scope.user.picture_url = null;
+                        scope.user.avatar = null;
+                    };
+
                     scope.save = function() {
                         scope.error = null;
                         notify.info(gettext('saving..'));
