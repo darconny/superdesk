@@ -4,23 +4,50 @@
         <div sd-authoring-widgets data-item="item">
             <div class="page-content-container"
                  ng-click="views.send = false">
-                <div class="theme-controls">
-                    <div sd-modal data-model="fullPreviewItem" data-full="true" class="add-scheme-modal modal-strech modal-big">
+                 <div class="preview-modal-control">
+                     <div sd-modal data-model="fullPreviewItem" data-full="true" class="modal-preview">
                         <div class="modal-header">
-                            <button class="close" ng-click="closeFullPreview()"><i class="icon-close-small"></i></button>
-                        </div>
-                        <div class="modal-body">
-                            <div>
-                                {{fullPreviewItem.body_html}}
+                            <div class="btn-group">
+                                <button ng-click="" title="Print"><i class="icon-print"></i></button>
+                                <button ng-click="closeFullPreview()" title="Close"><i class="icon-close-small"></i></button>
                             </div>
                         </div>
-                        <div class="modal-footer">zxc</div>
+                        <div class="modal-body" sd-shadow>
+                            <div class="preview-content">
+                                <div><!-- services -->
+                                    <span ng-repeat="service in fullPreviewItem.anpa_category">
+                                        {{service.name}}
+                                    </span>
+                                </div>
+                                <div><!-- topics -->
+                                    <span ng-repeat="topic in fullPreviewItem.subject">
+                                        {{topic.name}}
+                                    </span>
+                                </div>
+                                <div><!-- keyword -->
+                                    <span>{{fullPreviewItem.slugline}}</span>
+                                </div>
+                                <div class="headline">{{fullPreviewItem.headline}}</div><!-- headline -->
+                                <div ng-repeat="association in fullPreviewItem.associations" class="association"><!-- feature image -->
+                                    <img src="{{association.renditions.viewImage.href}}">
+                                </div>
+                                <div class="byline">{{fullPreviewItem.byline}}</div><!-- byline -->
+                                <div sd-html-preview="fullPreviewItem.body_html"></div><!-- body -->
+                                <div><!-- tags -->
+                                    <span ng-repeat="keyword in fullPreviewItem.keywords">
+                                        {{keyword}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>                        
                     </div>
                     <button class="toggle preview-toggle btn"
                             ng-click="openFullPreview(item)"
                             title="{{:: 'Preview' | translate}}">
-                        <i class="icon-fullscreen"></i>
+                        <i class="icon-eye-open"></i>
                     </button>
+                 </div>
+                <div class="theme-controls">                    
                     <button class="toggle proofread-toggle btn"
                             ng-class="{active: proofread}"
                             ng-click="proofread = !proofread"
